@@ -3,23 +3,24 @@
   <head>
     <meta charset="UTF-8"></meta>
 
-    <!-- There are a few application-wide styles to load. -->
+    <!-- Load application-wide styles. -->
     <link rel="stylesheet" type="text/css" href="./assets/css/application.css">
 
-    <!-- The application starts by showing customers,
-         so the customers styles need to be loaded. -->
+    <!-- Load the customers stylesheet. This needs to be loaded up-front because
+         the display of customers is the first view that the user sees. -->
     <link rel="stylesheet" type="text/css" href="./assets/css/customers.css">
   </head>
 
   <body>
-    <!-- The collection container will be a parent of many DOM nodes,
-	 with a single node for each customer. -->
+    <!-- The collection container is a parent of a set of elements that get 
+         appended as children by jQuery. -->
     <div id="collection-container">
     </div>
   </body>
 </html>
+
+<!-- Load a minified version of jQuery. -->
 <script src="./assets/js/jquery-3.3.1.min.js"></script>
 
-<!-- When a user first visits the application,
-     they see a list of customers that was appended into the DOM by this script.-->
+<!-- Get customers from the server and load them into the DOM with this script.-->
 <script src="./assets/js/customers.js"></script>

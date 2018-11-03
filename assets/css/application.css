@@ -1,3 +1,5 @@
+/* The HTML body element takes up the full width of the screen and is a Flexbox
+ * parent that centers its children horizontally. */
 body {
   width: 100%;
   display: flex;

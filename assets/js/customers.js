@@ -1,8 +1,9 @@
-// Set variables for the server endpoint
-// and a DOM node that will contain a collection of nodes for displaying customer info
+// Set a variable for the server endpoint and also a variable for a DOM node
+// that will contain a collection of nodes for displaying customer info.
 let url = "https://www.ecommerceapiexample.com/api/v1/customers";
 let collectionContainer = $("#collection-container");
 
+// Query the server for data.
 $.ajax({
   url: url,
   type: "GET",
@@ -14,14 +15,13 @@ $.ajax({
   }
 });
 
-// If the server responded with an error,
-// display the error in the console
+// If the server responded with an error, display the error in the console.
 function errorHandler(response) {
   console.log("There was an error! Here is the response:");
   console.log(response);
 }
 
-// Display each customer's info in the DOM
+// If the server responded with success, display each customer's info in the DOM.
 function successHandler(response) {
   console.log("The server returned a response with no errors.");
   response.forEach(customer => {
