@@ -1,6 +1,7 @@
-// Set variables for the server endpoint and the DOM body element
+// Set variables for the server endpoint
+// and a DOM node that will contain a collection of nodes for displaying customer info
 let url = "https://www.ecommerceapiexample.com/api/v1/customers";
-let body = $("body");
+let collectionContainer = $("#collection-container");
 
 $.ajax({
   url: url,
@@ -25,11 +26,11 @@ function successHandler(response) {
   console.log("The server returned a response with no errors.");
   response.forEach(customer => {
     var customerElement = `
-      <div>
+      <div class="customer">
         <span>First Name:  ${customer.first_name}<span><br/>
         <span>Last Name:  ${customer.last_name}</span><br/>
 	<span>ID:  ${customer.id}</span><br/>
       </div>`;
-    body.append(customerElement);
+    collectionContainer.append(customerElement);
   })
 }

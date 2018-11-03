@@ -2,11 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8"></meta>
+
+    <!-- There are a few application-wide styles to load. -->
+    <link rel="stylesheet" type="text/css" href="./assets/css/application.css">
+
+    <!-- The application starts by showing customers,
+         so the customers styles need to be loaded. -->
+    <link rel="stylesheet" type="text/css" href="./assets/css/customers.css">
   </head>
+
   <body>
+    <!-- The collection container will be a parent of many DOM nodes,
+	 with a single node for each customer. -->
+    <div id="collection-container">
+    </div>
   </body>
 </html>
 <script src="./assets/js/jquery-3.3.1.min.js"></script>
 
-<!-- When a user first visits the application, they see a list of customers.-->
+<!-- When a user first visits the application,
+     they see a list of customers that was appended into the DOM by this script.-->
 <script src="./assets/js/customers.js"></script>
