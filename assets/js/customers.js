@@ -21,9 +21,11 @@ function errorHandler(response) {
   console.log(response);
 }
 
-// If the server responded with success, display each customer's info in the DOM.
+// If the server responded with success, remove the loading animation from
+// the DOM. Display each customer's info in the DOM.
 function successHandler(response) {
   console.log("The server returned a response with no errors.");
+  $("#animation-container").remove();
   response.forEach(customer => {
     var customerElement = `
       <div class="customer">

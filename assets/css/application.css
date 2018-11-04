@@ -6,3 +6,37 @@ body {
   flex-direction: row;
   justify-content: center;
 }
+
+/* The animation container is a square element near the top of the page. 
+ * It is a Flexbox parent that centers its children horizontally along a 
+ * vertical column. Children may include some text like "Loading" as well
+ * as a CSS animation.*/
+#animation-container {
+  margin-top: 100px;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* The loading animation is a bar that spins. It starts slower, speeds up,
+ * and slows down again, repeatedly over a set interval. */
+#loading-animation {
+  margin-top: 25px;
+  background-color: red;
+  width: 8px;
+  height: 50px;
+  border-radius: 4px;
+  background-color: #ff8300;
+  animation: spinner 0.4s infinite ease-in-out;
+}
+
+@keyframes spinner {
+ 0% {
+   transform: rotate(0deg);
+ }
+ 100% {
+   transform: rotate(360deg);
+ }
+}
