@@ -1,20 +1,9 @@
-/* This implements a 'card' aesthetic that looks like a paper card with
- * customer details on it. */
-.customer {
+/* This is a paper with all of the details for a single customer. */
+.customer-data-sheet {
+  width: 66%;
   margin: 25px;
   padding: 15px;
   border: solid #F5F5F5 1px;
   border-radius: 2px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: box-shadow 0.12s;
-}
-
-/* When the user hovers over a customer card, it appears to elevate.
- * This is done by increasing the shadow next to all sides of the card,
- * with most emphasis on the bottom side and least emphasis on the top side.
- * This appears somewhat similar to how it might look if you sit at a desk
- * with a light at the opposite side of the desk, and you slightly lift a
- * card from the desk surface. */
-.customer:hover {
-  box-shadow: 0 2px 6px rgba(0,0,0,0.25), 0 2px 4px rgba(0,0,0,0.22);
 }
