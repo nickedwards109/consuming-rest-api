@@ -4,11 +4,11 @@
     <meta charset="UTF-8"></meta>
 
     <!-- Load application-wide styles. -->
-    <link rel="stylesheet" type="text/css" href="./assets/css/application.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/application.css"></link>
 
     <!-- Load the customers stylesheet. This needs to be loaded up-front because
          the display of customers is the first view that the user sees. -->
-    <link rel="stylesheet" type="text/css" href="./assets/css/customers.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/customers.css"></link>
   </head>
 
   <body>
@@ -18,15 +18,11 @@
       <span>Loading!</span>
       <div id="loading-animation"></div>
     </div>
-    <!-- The collection container is a parent of a set of elements that get 
-         appended as children by jQuery. -->
-    <div id="collection-container">
-    </div>
   </body>
 </html>
 
 <!-- Load a minified version of jQuery. -->
 <script src="./assets/js/jquery-3.3.1.min.js"></script>
 
-<!-- Get customers from the server and load them into the DOM with this script.-->
-<script src="./assets/js/customers.js"></script>
+<script src="./assets/js/application.js"></script>
+
