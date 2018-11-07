@@ -16,9 +16,15 @@ var collectionContainer = $(`<div id="collection-container"></div>`);
 // Get the current path. This will be needed later for routing purposes.
 var path = window.location;
 
-// Add /customers to the current path, since the first page displayed is
-// the customers page.
-window.location = path + '#customers';
+// Define a function for adding the #customers fragment to the URL if it isn't there
+function addCustomersURLFragment() {
+  if (!/#customers/.test(path)) {
+    window.location = path + '#customers';
+  }
+}
+
+// Add the #customers fragment to the URL if it isn't there
+addCustomersURLFragment();
 
 // These are the set of possible URLs that a user might enter into the
 // browser bar or that the user might be redirected to (still without a
@@ -78,7 +84,7 @@ function allCustomersSuccessHandler(response) {
   console.log("The server returned a response with no errors.");
   $("#animation-container").remove();
   if ($(".customer-data-sheet")) {$(".customer-data-sheet").remove();}
-    body.append(collectionContainer); 
+    body.append(collectionContainer);
     response.forEach(customer => {
     var customerThumbnail = `
       <div class="customer thumbnail" data-id=${customer.id} data-first-name=${customer.first_name} data-last-name=${customer.last_name}>
