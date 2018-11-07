@@ -24,8 +24,8 @@ window.location = path + '#customers';
 // browser bar or that the user might be redirected to (still without a
 // new page load)
 let routes = [
-  { pathMatcher: /index.html#customers$/, name: "customersIndex" },
-  { pathMatcher: /index.html#customers\/[0-9]+/, name: "customerShow" }
+  { pathMatcher: /#customers$/, name: "customersIndex" },
+  { pathMatcher: /#customers\/[0-9]+/, name: "customerShow" }
 ];
 
 // Match the current path with a route and call the appropriate action
