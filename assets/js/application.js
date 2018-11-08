@@ -13,13 +13,10 @@ let loadingAnimation = `
 // For example, this could contain many templates that each represent a customer.
 var collectionContainer = $(`<div id="collection-container"></div>`);
 
-// Get the current path. This will be needed later for routing purposes.
-var path = window.location;
-
 // Define a function for adding the #customers fragment to the URL if it isn't there
 function addCustomersURLFragment() {
-  if (!/#customers/.test(path)) {
-    window.location = path + '#customers';
+  if (!/#customers/.test(window.location)) {
+    window.location = window.location + '#customers';
   }
 }
 
@@ -31,33 +28,40 @@ addCustomersURLFragment();
 // new page load)
 let routes = [
   { pathMatcher: /#customers$/, name: "customersIndex" },
-  { pathMatcher: /#customers\/[0-9]+/, name: "customerShow" }
+  { pathMatcher: /#customers\/[0-9]+$/, name: "customerShow" }
 ];
 
 // Match the current path with a route and call the appropriate action
-match(path, routes);
+match(window.location, routes);
 
 // Define the function that matches a route with a path and calls an action
 function match(path, routes) {
   routes.forEach(route => {
   var isMatch = route.pathMatcher.test(path);
+
       // If the user is navigating to the customers index page:
       //   - Remove all content from the page
       //   - Display the loading animation
       //   - Call the action for getting and displaying all the customers' data
       if (isMatch === true && route.name === "customersIndex") {
-      $("body").empty();
-      $("body").append(loadingAnimation);
-      getCustomers();
-    }
+        $("body").empty();
+        $("body").append(loadingAnimation);
+        getCustomers();
+      }
+      if (isMatch === true && route.name === "customerShow") {
+        $("body").empty();
+        $("body").append(loadingAnimation);
+        var customerId = window.location.toString().replace(/\D+/, "");
+        getCustomer(customerId);
+      }
   });
 }
 
 // When the URL changes, match the new URL with a route and call the
 // appropriate action
 $(window).on('popstate', (event) => {
-  match(path, routes);
-} );
+  match(window.location, routes);
+});
 
 function getCustomers() {
   $.ajax({
@@ -72,6 +76,24 @@ function getCustomers() {
   });
 }
 
+function getCustomer(id) {
+  $.ajax({
+    url: `https://www.ecommerceapiexample.com/api/v1/customers/${id}`,
+    type: "GET",
+    error: function (response) {
+      errorHandler(response);
+    },
+    success: function (response) {
+      var customer = {
+        "firstName": response.first_name,
+        "lastName": response.last_name,
+        "id": response.id
+      };
+      getCustomerInvoices(customer);
+    }
+  });
+}
+
 // If the server responded with an error, display the error in the console.
 function errorHandler(response) {
   console.log("There was an error! Here is the response:");
@@ -81,7 +103,6 @@ function errorHandler(response) {
 // If the server responded with success, remove the loading animation from
 // the DOM. Display each customer's info in the DOM.
 function allCustomersSuccessHandler(response) {
-  console.log("The server returned a response with no errors.");
   $("#animation-container").remove();
   if ($(".customer-data-sheet")) {$(".customer-data-sheet").remove();}
     body.append(collectionContainer);
@@ -96,29 +117,34 @@ function allCustomersSuccessHandler(response) {
   })
 }
 
-// When the user clicks on a customer card:
-//   - Remove the display of every other customer
-//   - Show the loading animation
-//   - Call the handler which queries the server for the customer's invoices
-$(document).on("click", ".customer", function(event) {
-  collectionContainer.remove();
-  body.append(loadingAnimation);
-  var customer = {
-    "firstName": this.getAttribute("data-first-name"),
-    "lastName": this.getAttribute("data-last-name"),
-    "id": this.getAttribute("data-id")
-  };
-  var url = `https://www.ecommerceapiexample.com/api/v1/customers/${customer.id}/invoices`;
+function getCustomerInvoices(customer) {
+  var customerId = customer.id;
+  var url = `https://www.ecommerceapiexample.com/api/v1/customers/${customerId}/invoices`;
   $.ajax({
     url: url,
     type: "GET",
     error: function(response) {
       errorHandler(response);
     },
-    success: function(response) {
-      singleCustomerSuccessHandler(customer, response);
+    success: function(invoices) {
+     singleCustomerSuccessHandler(customer, invoices);
     }
   });
+}
+
+// When the user clicks on a customer card:
+//   - Remove the display of every other customer
+//   - Show the loading animation
+//   - Call the handler which queries the server for the customer's invoices
+$(document).on("click", ".customer", function(event) {
+  $("body").empty();
+  $("body").append(loadingAnimation);
+  var customer = {
+    "firstName": this.getAttribute("data-first-name"),
+    "lastName": this.getAttribute("data-last-name"),
+    "id": this.getAttribute("data-id")
+  };
+  getCustomerInvoices(customer);
 })
 
 //  This handler processes the response containing a customer's invoices.
@@ -126,10 +152,11 @@ $(document).on("click", ".customer", function(event) {
 //   - Develop a markup template for each invoice
 //   - Remove the loading animation
 //   - Insert the invoice templates into the DOM
-function singleCustomerSuccessHandler(customer, response) {
-    window.location = window.location + `/${customer.id}`;
-    match(path, routes);
-    var invoiceTemplates = response.map(invoice => {
+function singleCustomerSuccessHandler(customer, invoices) {
+ if (!/#customers\/[0-9]+/.test(window.location)) {
+   window.location = window.location + `/${customer.id}`;
+ }
+    var invoiceTemplates = invoices.map(invoice => {
     var invoiceTemplate = `
 	  <div class="invoice thumbnail">
             <span>Invoice ID: ${invoice.id}</span><br/>
@@ -139,8 +166,7 @@ function singleCustomerSuccessHandler(customer, response) {
         `;
     return invoiceTemplate;
   });
-  $("#animation-container").remove();
-  $("#collection-container").remove();
+  $("body").empty();
   var customerDataSheetTemplate = `
     <div class="customer-data-sheet collection-container">
         <span>First Name:  ${customer.firstName}<span><br/>
