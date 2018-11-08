@@ -51,7 +51,11 @@ function match(path, routes) {
       if (isMatch === true && route.name === "customerShow") {
         $("body").empty();
         $("body").append(loadingAnimation);
-        var customerId = window.location.toString().replace(/\D+/, "");
+        // Get the customer ID from the URL. The AWS S3 production URL may have
+        // other numbers in it, but only the one at the very end of the URL is
+        // the customer ID. The approach below grabs all of the numbers in the
+        // URL and assumes that the last one is the customer ID.
+        var customerId = window.location.toString().replace(/\D+/g, "").slice(-1)[0];
         getCustomer(customerId);
       }
   });
