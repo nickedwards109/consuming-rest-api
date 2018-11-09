@@ -51,11 +51,13 @@ function match(path, routes) {
       if (isMatch === true && route.name === "customerShow") {
         $("body").empty();
         $("body").append(loadingAnimation);
-        // Get the customer ID from the URL. The AWS S3 production URL may have
-        // other numbers in it, but only the one at the very end of the URL is
-        // the customer ID. The approach below grabs all of the numbers in the
-        // URL and assumes that the last one is the customer ID.
-        var customerId = window.location.toString().replace(/\D+/g, "").slice(-1)[0];
+        // Get the customer's primary key from the URL. The AWS S3 production
+        // URL has two numbers in it (for example, the 3 in s3-website and the
+        // 2 in us-east-2 in:
+        // http://consuming-ecommerce-rest-api.s3-website.us-east-2.amazonaws.com/#customers/11
+        // The approach below grabs all of the numbers in the URL and removes
+        // the first two, leaving only the customer's primary key.
+        var customerId = window.location.toString().replace(/\D+/g, "").slice(2);
         getCustomer(customerId);
       }
   });
